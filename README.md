@@ -20,10 +20,11 @@ A lightweight UE4SS mod for **MECCHA CHAMELEON** that exposes the game's Unreal 
 
 ## Installation
 
-1. Drop the mod folder into your UE4SS `Mods` directory.
-2. Enable it in `mods.txt`.
-3. Launch the game — a default config will be generated on your Desktop.
-4. Edit values as needed, then press `F1` in-game to apply.
+1. Locate your game's UE4SS `Mods` folder (usually `<GameRoot>/<GameName>/Binaries/Win64/Mods/`).
+2. Copy the `MecchaChameleonPerformance` folder into it.
+3. Ensure `mods.txt` in the `Mods` folder lists `MecchaChameleonPerformance` (or rely on the included `enabled.txt`).
+4. Launch the game. A default config will be generated automatically on your Desktop as `performance_chameleon_mod.txt`.
+5. Edit the config, save, then press `F1` in-game to apply. Press `F2` to disable and restore original settings.
 
 ## Disclaimer
 
