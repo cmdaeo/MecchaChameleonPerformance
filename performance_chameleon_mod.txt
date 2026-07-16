@@ -1,5 +1,5 @@
 ; ============================================================
-; MECCHA CHAMELEON PerfMenu — USER CONFIG
+; MECCHA CHAMELEON PerfMenu - USER CONFIG
 ; Edit values, save, press F1 in-game to apply.
 ; F2 disables and restores this game's ORIGINAL captured values.
 ; Lines starting with ; are comments. Do not remove the cvar names.
