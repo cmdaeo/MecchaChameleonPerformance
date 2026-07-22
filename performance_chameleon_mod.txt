@@ -1,72 +1,102 @@
 ; ============================================================
-; MECCHA CHAMELEON PerfMenu - USER CONFIG
-; Edit values, save, press F1 in-game to apply.
-; F2 disables and restores this game's ORIGINAL captured values.
-; Lines starting with ; are comments. Do not remove the cvar names.
+; MECCHA CHAMELEON PERFORMANCE MOD - USER CONFIG
+; ============================================================
+; GOAL: Maximum FPS on LOW-END / OLDER PCs. Visuals are secondary.
+; Game stays playable and readable, but looks plain/flat by design.
+;
+; HOW TO USE:
+;   1. Edit any value below, then save this file.
+;   2. Press F1 in-game to apply these settings.
+;   3. Press F2 to restore the game's original settings.
+;   4. Lines starting with ; are comments/explanations, ignored by the mod.
+;
+; NOTE: This file is ONLY created once, the first time the mod ever loads.
+; Your edits are safe and will persist across every future launch.
 ; ============================================================
 
-; --- Core rendering ---
-r.ScreenPercentage=80            ; render resolution %, lower = more FPS, blurrier image. 100=native res
-r.ShadowQuality=0                 ; 0=off 1=low 2=med 3=high, master shadow quality tier
-r.Shadow.MaxResolution=256         ; max shadow map texture resolution in pixels, only matters if ShadowQuality>0
-r.Shadow.Virtual.Enable=0          ; 1=virtual shadow maps (UE5 default, expensive), 0=off for max FPS
-r.Shadow.PerObject=0               ; 1=per-character shadow casting on, 0=off, saves draw calls
-r.Lumen.DiffuseIndirect.Allow=0    ; 1=Lumen global illumination on, 0=off, one of the biggest FPS costs in UE5
-r.Lumen.Reflections.Allow=0        ; 1=Lumen reflections on, 0=off, pairs with the line above
-r.MotionBlurQuality=0              ; 0=off 1-3=quality tiers, off recommended for clarity and lower input latency feel
-r.MotionBlur.Amount=0.0            ; blur strength multiplier 0.0-1.0, 0=fully disabled regardless of quality tier
-r.BloomQuality=0                   ; 0=off, higher=more light-bleed bloom passes, costs GPU time for a cosmetic effect
-r.DepthOfFieldQuality=0            ; 0=off, background blur effect, purely cosmetic
-r.AntiAliasingMethod=2             ; 0=none(aliased) 1=FXAA(cheap,blurry) 2=TAA(default) 3=TSR(UE5 upscaler, heavier)
-t.MaxFPS=0                         ; 0=uncapped, or set to a number (e.g. 144) to match monitor refresh and reduce tearing
+; ---- FRAMERATE ----
+t.MaxFPS=0
+; 0 = uncapped. Set a number (e.g. 60) to cap FPS and reduce heat/power draw.
 
-; --- LOD / view distance ---
-r.ViewDistanceScale=1.0            ; draw distance multiplier, 1.0=full, lower=objects vanish sooner but faster FPS
-r.Foliage.LODDistanceScale=1.0     ; grass/foliage detail falloff distance, lower=foliage simplifies sooner
-r.SkeletalMeshLODBias=0            ; higher=character meshes switch to lower-poly versions sooner at distance
-r.Nanite.MaxPixelsPerEdge=1.5      ; Nanite geometry detail threshold, higher=less detail=more FPS, 1.0=engine default
-r.VT.MaxAnisotropy=8               ; virtual texture anisotropic filtering samples, higher=sharper textures at angles, costs GPU
-r.HZBOcclusion=1                   ; 1=hierarchical Z-buffer occlusion culling on, skips rendering hidden objects, free FPS
-r.ParticleLightingWithoutProxies=1 ; 1=cheaper lighting model for particle effects (smoke, paint splashes)
+; ---- RESOLUTION ----
+r.ScreenPercentage=70
+; Render resolution %. Biggest single FPS gain here. Lower = blurrier, faster.
 
-; --- Texture streaming (fixes pop-in / hitches) ---
-r.Streaming.PoolSize=1500                  ; texture pool size in MB held in VRAM/RAM for streamed textures
-r.Streaming.PoolSizeVRAMPercentage=0       ; 0=unlimited, removes engine's default 70% VRAM cap on texture pool, kills pop-in
-r.Streaming.LimitPoolSizeToVRAM=1          ; 1=respect the VRAM percentage cap above, 0=ignore it entirely
-r.Streaming.MaxTempMemoryAllowed=600       ; temporary memory in MB used during active streaming operations
-r.Streaming.FramesForFullUpdate=1          ; frames needed for textures to reach full mip resolution, 1=fastest response to camera movement
-r.Streaming.MinMipForSplitScreen=0         ; minimum mip level kept loaded even in split-screen/menu states, 0=engine default
-gc.TimeBetweenPurgingPendingKillObjects=20 ; seconds between garbage collection sweeps, lower=more frequent GC, can prevent memory bloat but adds micro-stutter risk
+; ---- SHADOWS ----
+r.ShadowQuality=0
+; 0 = lowest/blockiest, fastest. Range 0-5.
+r.Shadow.MaxResolution=512
+; Shadow map texture size. Lower = blockier edges, faster.
+r.Shadow.Virtual.Enable=0
+; Newer heavier shadow tech. Keep OFF on low-end PCs.
+r.Shadow.PerObject=0
+; Character/object dynamic shadows. 0=off (saves GPU), 1=on.
 
-; --- Input latency ---
-r.GTSyncType=1                     ; 0=default 1=game thread syncs directly to RHI thread, Epic-documented lower-cost latency fix
-r.OneFrameThreadLag=0              ; 0=disable the extra buffered render frame, paired with GTSyncType for max responsiveness
+; ---- GLOBAL ILLUMINATION / LUMEN ----
+r.Lumen.DiffuseIndirect.Allow=0
+; Dynamic bounced lighting. 0=off, flatter but big FPS gain.
+r.Lumen.Reflections.Allow=0
+; Dynamic reflections on shiny surfaces. 0=off, faster.
+r.Lumen.HardwareRayTracing=0
+; Keep 0 always on low-end PCs.
 
-; --- Competitive visual clarity (cosmetic post-process removal) ---
-r.FilmGrain=0                      ; 0=off, removes simulated film grain noise overlay
-r.Tonemapper.GrainQuantization=0   ; 0=off, removes additional grain dithering pass
-r.SceneColorFringeQuality=0        ; 0=off, disables chromatic aberration (color fringing at screen edges)
-r.SceneColorFringe.Max=0           ; caps max chromatic aberration offset to 0 as a redundant safety
-r.Tonemapper.Quality=1             ; lower tiers reduce vignette darkening at screen edges, 5=engine default with full vignette
-r.Tonemapper.Sharpen=0.6           ; post-process sharpening amount, counters TAA/upscaling softness, 0=off
+; ---- RAY TRACING ----
+r.RayTracing=0
+r.RayTracing.Shadows=0
 
-; --- Audio (footstep/spatial cues) ---
-au.DisableHRTF=0                        ; 0=HRTF directional audio ON (recommended), 1=disables 3D positional processing
-au.BinauralSpatializationEnabled=1      ; 1=binaural 3D audio processing on, sharpens front/back/behind positioning over headphones
-au.DisableOcclusion=1                   ; 1=sound is NOT muffled by walls/geometry, 0=realistic occlusion (muffled through walls)
-au.3dVisualize.Enabled=0                ; debug overlay showing 3D sound sources, keep off, dev/debug tool only
-au.MaxChannels=64                       ; max simultaneous audio voices/channels, higher prevents SFX getting culled in busy scenes
-s.AudioMixerMaxOutputChannels=64        ; companion output channel limit for the audio mixer, keep matched to MaxChannels above
-au.EnvironmentalReverbEnabled=1         ; 1=reverb from room geometry on, helps distinguish indoor/outdoor and room size by ear
-au.AttenuationDebug=0                   ; debug attenuation visualization, keep off
+; ---- POST-PROCESS (purely cosmetic) ----
+r.MotionBlurQuality=0
+r.MotionBlur.Amount=0.0
+r.BloomQuality=0
+r.DepthOfFieldQuality=0
+r.FilmGrain=0
+r.Tonemapper.Quality=0
+r.Tonemapper.Sharpen=0.0
+r.SceneColorFringeQuality=0
+r.SceneColorFringe.Max=0
 
-; --- Netcode (movement smoothing, ping handling, packet behavior) ---
-p.NetworkSmoothingFactor=0              ; 0=minimal smoothing on your own replicated movement, most responsive but can look jittery to others
-p.NetworkSimulatedSmoothLocationTime=0.1 ; time in seconds used to smooth OTHER players' position updates, lower=snappier but more jitter-prone on bad connections
-p.NetworkSimulatedSmoothRotationTime=0.05 ; same as above but for other players' rotation, lower=faster visual turn updates
-net.UseAdaptiveNetUpdateFrequency=0     ; 0=disable adaptive throttling of update rate based on relevancy/distance, keeps consistent tick rate
-p.NetPingExtrapolation=0                ; 0=disable extrapolating player position during ping spikes, reduces rubber-banding artifacts
-p.NetInterpolationMultiplier=1.0        ; multiplier on interpolation delay for remote players, 1.0=default, lower=less delay but choppier motion
-net.MaxMoveDeltaTime=0.125              ; max time delta allowed per movement update packet, prevents large teleport-like corrections after lag spikes
-p.NetShowCorrections=0                  ; debug visualization of server position corrections, keep off, dev tool only
-net.RandomizedRange=0                   ; disables any randomized network jitter injection some builds add for anti-cheat obfuscation testing
+; ---- ANTI-ALIASING ----
+r.AntiAliasingMethod=1
+; 0=off, 1=FXAA (cheap, recommended), 2=TAA, 3=MSAA, 4=TSR (most expensive).
+
+; ---- GEOMETRY DETAIL ----
+r.Nanite.MaxPixelsPerEdge=4.0
+; Higher = less geometry detail required, faster.
+r.SkeletalMeshLODBias=2
+; Characters use lower detail sooner. Higher = faster.
+r.ViewDistanceScale=0.6
+; How far objects render before disappearing/simplifying. Lower = faster.
+foliage.LODDistanceScale=0.5
+; Same as above but for grass/trees. Lower = faster.
+
+; ---- OCCLUSION CULLING ----
+r.HZBOcclusion=1
+; Skips rendering hidden objects. ALWAYS keep 1, free performance.
+
+; ---- TEXTURE STREAMING / VRAM ----
+r.Streaming.PoolSize=800
+; VRAM (MB) reserved for streaming textures. Lower = less VRAM used.
+r.Streaming.LimitPoolSizeToVRAM=1
+; Prevents exceeding actual VRAM. Keep 1 on low-VRAM GPUs.
+r.Streaming.MaxTempMemoryAllowed=100
+; Extra temp memory during streaming spikes. Lower = less RAM/VRAM use.
+r.Streaming.FramesForFullUpdate=2
+; Frames spread across for texture loading. Lower = faster load, more CPU/frame.
+
+; ---- MEMORY / GARBAGE COLLECTION ----
+gc.TimeBetweenPurgingPendingKillObjects=20
+; How often unused memory is cleaned (seconds). Lower = better for low-RAM systems.
+
+; ---- INPUT LATENCY ----
+r.GTSyncType=1
+; Lower input lag, slightly less GPU parallelism. Recommended.
+r.OneFrameThreadLag=0
+; 0 = most responsive. 1 = slightly more FPS, slightly more input lag.
+
+; ---- PARTICLES / VFX ----
+fx.Niagara.QualityLevel=0
+; Particle effect quality/count. 0 = lowest, fastest.
+
+; ---- HAIR STRANDS ----
+r.HairStrands.Enable=0
+; Strand-based hair rendering. 0=off (uses simpler fallback), faster.
